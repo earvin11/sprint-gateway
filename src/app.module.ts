@@ -4,6 +4,7 @@ import { RedisModule } from './redis/infraestructure/redis.module';
 import { envs } from './config/envs';
 import { BullModule } from '@nestjs/bullmq';
 import { ClientModule } from './clients/client.module';
+import { OperatorModule } from './operators/operator.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { ClientModule } from './clients/client.module';
       },
     }),
     ClientModule,
+    OperatorModule,
     RedisModule,
   ],
   controllers: [AppController],
