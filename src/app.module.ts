@@ -5,6 +5,7 @@ import { envs } from './config/envs';
 import { BullModule } from '@nestjs/bullmq';
 import { ClientModule } from './clients/client.module';
 import { OperatorModule } from './operators/operator.module';
+import { CurrencyModule } from './currencies/currency.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { OperatorModule } from './operators/operator.module';
       },
     }),
     ClientModule,
+    CurrencyModule,
     OperatorModule,
     RedisModule,
   ],
