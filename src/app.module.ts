@@ -6,6 +6,7 @@ import { BullModule } from '@nestjs/bullmq';
 import { ClientModule } from './clients/client.module';
 import { OperatorModule } from './operators/operator.module';
 import { CurrencyModule } from './currencies/currency.module';
+import { CrupierModule } from './crupiers/crupier.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { CurrencyModule } from './currencies/currency.module';
       },
     }),
     ClientModule,
+    CrupierModule,
     CurrencyModule,
     OperatorModule,
     RedisModule,
