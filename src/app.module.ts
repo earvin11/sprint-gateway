@@ -7,6 +7,7 @@ import { ClientModule } from './clients/client.module';
 import { OperatorModule } from './operators/operator.module';
 import { CurrencyModule } from './currencies/currency.module';
 import { CrupierModule } from './crupiers/crupier.module';
+import { GameModule } from './games/game.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { CrupierModule } from './crupiers/crupier.module';
     ClientModule,
     CrupierModule,
     CurrencyModule,
+    GameModule,
     OperatorModule,
     RedisModule,
   ],
