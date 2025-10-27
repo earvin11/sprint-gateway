@@ -1,42 +1,42 @@
-// import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber, IsPositive, IsString } from 'class-validator';
 
 export class CreateOperatorDto {
-  // @ApiProperty()
+  @ApiProperty()
   @IsString()
   name: string;
 
-  // @ApiProperty()
+  @ApiProperty()
   @IsString()
   client: string;
 
-  // @ApiProperty()
+  @ApiProperty()
   @IsNumber()
   @IsPositive()
   minBet: number;
 
-  // @ApiProperty()
+  @ApiProperty()
   @IsNumber()
   @IsPositive()
   maxBet: number;
 
-  // @ApiProperty()
+  @ApiProperty()
   @IsString()
   endpointAuth: string;
 
-  // @ApiProperty()
+  @ApiProperty()
   @IsString()
   endpointBet: string;
 
-  // @ApiProperty()
+  @ApiProperty()
   @IsString()
   endpointWin: string;
 
-  // @ApiProperty()
+  @ApiProperty()
   @IsString()
   endpointRollback: string;
 
-  // @ApiProperty()
+  @ApiProperty()
   @IsString()
   casinoToken: string;
 }
