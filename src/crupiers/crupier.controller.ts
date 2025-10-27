@@ -7,12 +7,12 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
+import { ApiOperation, ApiResponse, ApiParam, ApiBody } from '@nestjs/swagger';
 import { LoggerPort } from 'src/logging/domain/logger.port';
 import { RedisRpcPort } from 'src/redis/domain/redis-rpc.port';
 import { CrupierRpcChannelsEnum } from './enum/crupier.rpc-channels';
 import { CreateCrupierDto } from './dto/create-crupier.dto';
 import { UpdateCrupierDto } from './dto/update-crupier.dto';
-import { ApiOperation, ApiResponse, ApiParam, ApiBody } from '@nestjs/swagger';
 
 @Controller('crupiers')
 export class CrupierController {

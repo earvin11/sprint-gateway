@@ -7,12 +7,12 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
+import { ApiOperation, ApiResponse, ApiParam, ApiBody } from '@nestjs/swagger';
 import { LoggerPort } from '../logging/domain/logger.port';
 import { RedisRpcPort } from 'src/redis/domain/redis-rpc.port';
 import { OperatorRpcChannelsEnum } from './enums/operator.rpc-channels';
 import { CreateOperatorDto } from './dtos/create-operator.dto';
 import { UpdateOperatorDto } from './dtos/update-operator.dto';
-import { ApiOperation, ApiResponse, ApiParam, ApiBody } from '@nestjs/swagger';
 
 @Controller('operators')
 export class OperatorController {

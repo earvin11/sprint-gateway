@@ -7,12 +7,12 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
+import { ApiOperation, ApiResponse, ApiParam, ApiBody } from '@nestjs/swagger';
 import { CreateClientDto } from './dtos/create-client.dto';
 import { LoggerPort } from '../logging/domain/logger.port';
 import { RedisRpcPort } from 'src/redis/domain/redis-rpc.port';
 import { ClientRpcChannelsEnum } from './enums/client.rpc-channels';
 import { UpdateClientDto } from './dtos/update-client.dto';
-import { ApiOperation, ApiResponse, ApiParam, ApiBody } from '@nestjs/swagger';
 
 @Controller('clients')
 export class ClientController {
