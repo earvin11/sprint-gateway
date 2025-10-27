@@ -8,7 +8,7 @@ export class AppController {
   @Get()
   getHello(): Record<string, string> {
     return {
-      message: `${envs.seqWorkSpace.toLocaleUpperCase().trim()} OK`,
+      message: `${envs?.seqWorkSpace?.toLocaleUpperCase()?.trim()} OK`,
     };
   }
 }

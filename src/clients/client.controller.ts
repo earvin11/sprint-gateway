@@ -6,13 +6,13 @@ import {
   Param,
   Patch,
   Post,
-  Query,
 } from '@nestjs/common';
 import { CreateClientDto } from './dtos/create-client.dto';
 import { LoggerPort } from '../logging/domain/logger.port';
 import { RedisRpcPort } from 'src/redis/domain/redis-rpc.port';
 import { ClientRpcChannelsEnum } from './enums/client.rpc-channels';
 import { UpdateClientDto } from './dtos/update-client.dto';
+import { ApiOperation, ApiResponse, ApiParam, ApiBody } from '@nestjs/swagger';
 
 @Controller('clients')
 export class ClientController {
@@ -22,6 +22,10 @@ export class ClientController {
   ) {}
 
   @Post()
+  @ApiOperation({ summary: 'Crear un nuevo cliente' })
+  @ApiBody({ type: CreateClientDto, description: 'Datos del cliente a crear' })
+  @ApiResponse({ status: 201, description: 'Cliente creado exitosamente.' })
+  @ApiResponse({ status: 400, description: 'Datos inválidos en la solicitud.' })
   async create(@Body() createClientDto: CreateClientDto) {
     const resp = await this.redisRpcPort.send(
       ClientRpcChannelsEnum.CREATE,
@@ -31,6 +35,12 @@ export class ClientController {
   }
 
   @Get()
+  @ApiOperation({ summary: 'Obtener todos los clientes' })
+  @ApiResponse({
+    status: 200,
+    description: 'Lista de clientes obtenida exitosamente.',
+  })
+  @ApiResponse({ status: 500, description: 'Error interno del servidor.' })
   async findAll() {
     const resp = await this.redisRpcPort.send(
       ClientRpcChannelsEnum.FIND_ALL,
@@ -40,6 +50,11 @@ export class ClientController {
   }
 
   @Get(':id')
+  @ApiOperation({ summary: 'Obtener un cliente por ID' })
+  @ApiParam({ name: 'id', description: 'ID del cliente', type: String })
+  @ApiResponse({ status: 200, description: 'Cliente encontrado.' })
+  @ApiResponse({ status: 404, description: 'Cliente no encontrado.' })
+  @ApiResponse({ status: 500, description: 'Error interno del servidor.' })
   async findById(@Param('id') id: string) {
     const resp = await this.redisRpcPort.send(
       ClientRpcChannelsEnum.FIND_BY_ID,
@@ -49,6 +64,23 @@ export class ClientController {
   }
 
   @Patch(':id')
+  @ApiOperation({ summary: 'Actualizar parcialmente un cliente por ID' })
+  @ApiParam({
+    name: 'id',
+    description: 'ID del cliente a actualizar',
+    type: String,
+  })
+  @ApiBody({
+    type: UpdateClientDto,
+    description: 'Campos parciales para actualizar',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Cliente actualizado exitosamente.',
+  })
+  @ApiResponse({ status: 400, description: 'Datos inválidos en la solicitud.' })
+  @ApiResponse({ status: 404, description: 'Cliente no encontrado.' })
+  @ApiResponse({ status: 500, description: 'Error interno del servidor.' })
   async update(
     @Param('id') id: string,
     @Body() updateClientDto: UpdateClientDto,
@@ -61,6 +93,15 @@ export class ClientController {
   }
 
   @Delete(':id')
+  @ApiOperation({ summary: 'Eliminar un cliente por ID' })
+  @ApiParam({
+    name: 'id',
+    description: 'ID del cliente a eliminar',
+    type: String,
+  })
+  @ApiResponse({ status: 200, description: 'Cliente eliminado exitosamente.' })
+  @ApiResponse({ status: 404, description: 'Cliente no encontrado.' })
+  @ApiResponse({ status: 500, description: 'Error interno del servidor.' })
   async remove(@Param('id') id: string) {
     const resp = await this.redisRpcPort.send(ClientRpcChannelsEnum.DELETE, {
       id,
