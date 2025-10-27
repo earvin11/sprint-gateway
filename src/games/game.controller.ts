@@ -18,7 +18,10 @@ export class GameController {
     }
 
     if (createGameDto.type == 'wheel') {
-      const resp = await this.redisRpcPort.send(WheelRpcChannelsEnum.CREATE, createGameDto);
+      const resp = await this.redisRpcPort.send(
+        WheelRpcChannelsEnum.CREATE,
+        createGameDto,
+      );
       return resp;
     }
 
