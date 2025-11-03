@@ -1,4 +1,5 @@
 export enum OperatorRpcChannelsEnum {
+  ASSIGN_GAME = 'assign-game',
   CREATE = 'create-operator',
   FIND_BY_ID = 'operator-by-id',
   FIND_ONE = 'operator-by-filter',

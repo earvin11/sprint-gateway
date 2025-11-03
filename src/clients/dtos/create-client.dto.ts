@@ -32,12 +32,12 @@ export class CreateClientDto {
   @IsString()
   endpointBet: string;
 
-  @ApiProperty({
-    description: 'Endpoint de consulta de saldo del cliente',
-    minLength: 3,
-  })
-  @IsString()
-  endpointBalance: string;
+  // @ApiProperty({
+  //   description: 'Endpoint de consulta de saldo del cliente',
+  //   minLength: 3,
+  // })
+  // @IsString()
+  // endpointBalance: string;
 
   @ApiProperty({
     description: 'Endpoint de consulta de juegos del cliente',
