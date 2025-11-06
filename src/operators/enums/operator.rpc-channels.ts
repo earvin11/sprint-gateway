@@ -6,6 +6,7 @@ export enum OperatorRpcChannelsEnum {
   FIND_ALL = 'find-operators',
   UPDATE = 'update-operator',
   DELETE = 'delete operator',
+  FIND_GAMES_BY_OPERATOR = 'find-games-by-operator',
 }
 
 const values = Object.values(OperatorRpcChannelsEnum).filter(

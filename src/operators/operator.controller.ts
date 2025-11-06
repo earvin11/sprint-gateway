@@ -109,6 +109,15 @@ export class OperatorController {
     return resp;
   }
 
+  @Get(':id/games')
+  async getGames(@Param('id') id: string) {
+    const resp = await this.redisRpcPort.send(
+      OperatorRpcChannelsEnum.FIND_GAMES_BY_OPERATOR,
+      { operator: id },
+    );
+    return resp;
+  }
+
   @Post(':id/games')
   async assignGame(
     @Param('id') id: string,
