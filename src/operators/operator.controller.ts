@@ -13,7 +13,7 @@ import { RedisRpcPort } from 'src/redis/domain/redis-rpc.port';
 import { OperatorRpcChannelsEnum } from './enums/operator.rpc-channels';
 import { CreateOperatorDto } from './dtos/create-operator.dto';
 import { UpdateOperatorDto } from './dtos/update-operator.dto';
-import { string } from 'joi';
+import { AssignOperatorGameDto } from './dtos/assign-game.dto';
 
 @Controller('operators')
 export class OperatorController {
@@ -110,7 +110,10 @@ export class OperatorController {
   }
 
   @Post(':id/games')
-  async assignGame(@Param('id') id: string, @Body() data: any) {
+  async assignGame(
+    @Param('id') id: string,
+    @Body() data: AssignOperatorGameDto,
+  ) {
     const resp = await this.redisRpcPort.send(
       OperatorRpcChannelsEnum.ASSIGN_GAME,
       { operator: id, ...data },
