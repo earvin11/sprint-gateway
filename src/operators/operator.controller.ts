@@ -13,12 +13,14 @@ import { LoggerPort } from '../logging/domain/logger.port';
 import { RedisRpcPort } from 'src/redis/domain/redis-rpc.port';
 import {
   OperatorGameRpcChannelsEnum,
+  OperatorLimitsRpcChannelsEnum,
   OperatorRpcChannelsEnum,
 } from './enums/operator.rpc-channels';
 import { CreateOperatorDto } from './dtos/create-operator.dto';
 import { UpdateOperatorDto } from './dtos/update-operator.dto';
-import { AssignOperatorGameDto } from './dtos/assign-game.dto';
+import { CreateOperatorGameDto } from './dtos/create-operator-game.dto';
 import { GetOperatorGamesQueryDto } from './dtos/get-operator-game.dto';
+import { CreateOperatorLimitsDto } from './dtos/create-operator-limit.dto';
 
 @Controller('operators')
 export class OperatorController {
@@ -131,7 +133,7 @@ export class OperatorController {
   @Post(':id/games')
   async assignGame(
     @Param('id') id: string,
-    @Body() data: AssignOperatorGameDto,
+    @Body() data: CreateOperatorGameDto,
   ) {
     const resp = await this.redisRpcPort.send(
       OperatorGameRpcChannelsEnum.CREATE,
@@ -143,11 +145,48 @@ export class OperatorController {
   @Patch(':id/games')
   async changeAssignedGame(
     @Param('id') id: string,
-    @Body() data: AssignOperatorGameDto,
+    @Body() data: CreateOperatorGameDto,
   ) {
     const resp = await this.redisRpcPort.send(
       OperatorGameRpcChannelsEnum.ASSIGN_GAME,
       { operator: id, ...data },
+    );
+    return resp;
+  }
+
+  @Get(':id/limits')
+  async getLimitsAssigned(
+    @Param('id') id: string,
+    @Query() query: GetOperatorGamesQueryDto,
+  ) {
+    const { limit, offset } = query;
+    const resp = await this.redisRpcPort.send(
+      OperatorLimitsRpcChannelsEnum.FIND_BY_OPERATOR,
+      { operator: id, limit, offset },
+    );
+    return resp;
+  }
+
+  @Post(':id/limits')
+  async createLimit(
+    @Param('id') id: string,
+    @Body() data: CreateOperatorLimitsDto,
+  ) {
+    const resp = await this.redisRpcPort.send(
+      OperatorLimitsRpcChannelsEnum.CREATE,
+      { ...data, operator: id },
+    );
+    return resp;
+  }
+
+  @Patch(':id/limits')
+  async getLimits(
+    @Param('id') id: string,
+    @Body() data: CreateOperatorLimitsDto,
+  ) {
+    const resp = await this.redisRpcPort.send(
+      OperatorLimitsRpcChannelsEnum.UPDATE_BY_OPERATOR_CURRENCY,
+      { ...data, operator: id },
     );
     return resp;
   }
