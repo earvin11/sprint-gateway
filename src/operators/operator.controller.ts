@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiParam, ApiBody } from '@nestjs/swagger';
 import { LoggerPort } from '../logging/domain/logger.port';
@@ -17,6 +18,7 @@ import {
 import { CreateOperatorDto } from './dtos/create-operator.dto';
 import { UpdateOperatorDto } from './dtos/update-operator.dto';
 import { AssignOperatorGameDto } from './dtos/assign-game.dto';
+import { GetOperatorGamesQueryDto } from './dtos/get-operator-game.dto';
 
 @Controller('operators')
 export class OperatorController {
@@ -113,10 +115,15 @@ export class OperatorController {
   }
 
   @Get(':id/games')
-  async getGamesAssigned(@Param('id') id: string) {
+  async getGamesAssigned(
+    @Param('id') id: string,
+    @Query() query: GetOperatorGamesQueryDto,
+  ) {
+    const { typeGame, limit, offset } = query;
+    console.log({ typeGame, limit, offset });
     const resp = await this.redisRpcPort.send(
-      OperatorGameRpcChannelsEnum.FIND_GAMES_ASSIGNED_BY_OPERATOR,
-      { operator: id },
+      OperatorGameRpcChannelsEnum.FIND_BY_OPERATOR,
+      { operator: id, typeGame, limit, offset },
     );
     return resp;
   }
@@ -127,7 +134,7 @@ export class OperatorController {
     @Body() data: AssignOperatorGameDto,
   ) {
     const resp = await this.redisRpcPort.send(
-      OperatorGameRpcChannelsEnum.ASSIGN_GAME,
+      OperatorGameRpcChannelsEnum.CREATE,
       { operator: id, ...data },
     );
     return resp;
