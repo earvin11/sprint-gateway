@@ -10,7 +10,10 @@ import {
 import { ApiOperation, ApiResponse, ApiParam, ApiBody } from '@nestjs/swagger';
 import { LoggerPort } from '../logging/domain/logger.port';
 import { RedisRpcPort } from 'src/redis/domain/redis-rpc.port';
-import { OperatorRpcChannelsEnum } from './enums/operator.rpc-channels';
+import {
+  OperatorGameRpcChannelsEnum,
+  OperatorRpcChannelsEnum,
+} from './enums/operator.rpc-channels';
 import { CreateOperatorDto } from './dtos/create-operator.dto';
 import { UpdateOperatorDto } from './dtos/update-operator.dto';
 import { AssignOperatorGameDto } from './dtos/assign-game.dto';
@@ -110,9 +113,9 @@ export class OperatorController {
   }
 
   @Get(':id/games')
-  async getGames(@Param('id') id: string) {
+  async getGamesAssigned(@Param('id') id: string) {
     const resp = await this.redisRpcPort.send(
-      OperatorRpcChannelsEnum.FIND_GAMES_BY_OPERATOR,
+      OperatorGameRpcChannelsEnum.FIND_GAMES_ASSIGNED_BY_OPERATOR,
       { operator: id },
     );
     return resp;
@@ -124,7 +127,19 @@ export class OperatorController {
     @Body() data: AssignOperatorGameDto,
   ) {
     const resp = await this.redisRpcPort.send(
-      OperatorRpcChannelsEnum.ASSIGN_GAME,
+      OperatorGameRpcChannelsEnum.ASSIGN_GAME,
+      { operator: id, ...data },
+    );
+    return resp;
+  }
+
+  @Patch(':id/games')
+  async changeAssignedGame(
+    @Param('id') id: string,
+    @Body() data: AssignOperatorGameDto,
+  ) {
+    const resp = await this.redisRpcPort.send(
+      OperatorGameRpcChannelsEnum.ASSIGN_GAME,
       { operator: id, ...data },
     );
     return resp;

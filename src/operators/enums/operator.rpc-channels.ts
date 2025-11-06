@@ -1,12 +1,15 @@
 export enum OperatorRpcChannelsEnum {
-  ASSIGN_GAME = 'assign-game',
   CREATE = 'create-operator',
   FIND_BY_ID = 'operator-by-id',
   FIND_ONE = 'operator-by-filter',
   FIND_ALL = 'find-operators',
   UPDATE = 'update-operator',
   DELETE = 'delete operator',
-  FIND_GAMES_BY_OPERATOR = 'find-games-by-operator',
+}
+
+export enum OperatorGameRpcChannelsEnum {
+  FIND_GAMES_ASSIGNED_BY_OPERATOR = 'find-games-assigned-by-operator',
+  ASSIGN_GAME = 'assign-game',
 }
 
 const values = Object.values(OperatorRpcChannelsEnum).filter(
