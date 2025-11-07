@@ -5,7 +5,8 @@ import { ApiProperty } from '@nestjs/swagger';
 export class GetOperatorGamesQueryDto {
   @ApiProperty()
   @IsString()
-  typeGame: string;
+  @IsOptional()
+  typeGame?: string;
 
   @ApiProperty()
   @IsOptional()

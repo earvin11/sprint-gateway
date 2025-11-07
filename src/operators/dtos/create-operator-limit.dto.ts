@@ -9,6 +9,7 @@ import {
   IsOptional,
   IsArray,
 } from 'class-validator';
+import { GameTypes } from './create-operator-game.dto';
 
 export enum OperatorLimitsTypesEnum {
   ROULETTE = 'op_lm_roulette',
@@ -68,9 +69,9 @@ export class CreateOperatorLimitsDto {
   @IsNumber()
   maxBetPosition: number;
 
-  @ApiProperty({ enum: OperatorLimitsTypesEnum })
-  @IsEnum(OperatorLimitsTypesEnum)
-  type: OperatorLimitsTypesEnum;
+  @ApiProperty({ enum: GameTypes })
+  @IsEnum(GameTypes)
+  typeGame: GameTypes;
 
   // WHEEL-specific optional field
   @ApiProperty({ type: [FiguresLimitsDto], required: false })

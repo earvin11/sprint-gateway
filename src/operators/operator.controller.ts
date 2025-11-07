@@ -122,7 +122,6 @@ export class OperatorController {
     @Query() query: GetOperatorGamesQueryDto,
   ) {
     const { typeGame, limit, offset } = query;
-    console.log({ typeGame, limit, offset });
     const resp = await this.redisRpcPort.send(
       OperatorGameRpcChannelsEnum.FIND_BY_OPERATOR,
       { operator: id, typeGame, limit, offset },
