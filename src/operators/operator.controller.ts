@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   Patch,
   Post,
@@ -150,6 +151,8 @@ export class OperatorController {
       OperatorGameRpcChannelsEnum.ASSIGN_GAME,
       { operator: id, ...data },
     );
+
+    if (!resp) throw new NotFoundException('Operator Game not found');
     return resp;
   }
 
@@ -187,6 +190,7 @@ export class OperatorController {
       OperatorLimitsRpcChannelsEnum.UPDATE_BY_OPERATOR_CURRENCY,
       { ...data, operator: id },
     );
+    if (!resp) throw new NotFoundException('Operator Limit not found');
     return resp;
   }
 }
