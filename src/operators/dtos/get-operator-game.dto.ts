@@ -3,19 +3,19 @@ import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class GetOperatorGamesQueryDto {
-  @ApiProperty()
+  @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
   typeGame?: string;
 
-  @ApiProperty()
+  @ApiProperty({ required: false })
   @IsOptional()
   @Type(() => Number)
   @IsNumber()
   @Min(0)
   limit?: number;
 
-  @ApiProperty()
+  @ApiProperty({ required: false })
   @IsOptional()
   @Type(() => Number)
   @IsNumber()
