@@ -179,7 +179,7 @@ export class OperatorController {
   }
 
   @Patch(':id/limits')
-  async getLimits(
+  async updateLimit(
     @Param('id') id: string,
     @Body() data: CreateOperatorLimitsDto,
   ) {
