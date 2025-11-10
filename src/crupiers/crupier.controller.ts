@@ -6,6 +6,8 @@ import {
   Param,
   Patch,
   Post,
+  Query,
+  ValidationPipe,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiParam, ApiBody } from '@nestjs/swagger';
 import { LoggerPort } from 'src/logging/domain/logger.port';
@@ -13,6 +15,7 @@ import { RedisRpcPort } from 'src/redis/domain/redis-rpc.port';
 import { CrupierRpcChannelsEnum } from './enum/crupier.rpc-channels';
 import { CreateCrupierDto } from './dto/create-crupier.dto';
 import { UpdateCrupierDto } from './dto/update-crupier.dto';
+import { GetGenericQueryDto } from 'src/shared/dtos/get-generic.dto';
 
 @Controller('crupiers')
 export class CrupierController {
@@ -34,17 +37,20 @@ export class CrupierController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Obtener todos los crupieres' })
+  @ApiOperation({ summary: 'Obtener todos los crupiers' })
   @ApiResponse({
     status: 200,
-    description: 'Lista de crupieres obtenida exitosamente.',
+    description: 'Lista de crupiers obtenida exitosamente.',
   })
   @ApiResponse({ status: 500, description: 'Error interno del servidor.' })
-  async findAll() {
-    const resp = await this.redisRpcPort.send(
-      CrupierRpcChannelsEnum.FIND_ALL,
-      {},
-    );
+  async findAll(
+    @Query(new ValidationPipe({ transform: true }))
+    query: GetGenericQueryDto,
+  ) {
+    const resp = await this.redisRpcPort.send(CrupierRpcChannelsEnum.FIND_ALL, {
+      page: query.page,
+      limit: query.limit,
+    });
     return resp;
   }
 

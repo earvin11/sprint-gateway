@@ -6,6 +6,8 @@ import {
   Param,
   Patch,
   Post,
+  Query,
+  ValidationPipe,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiParam, ApiBody } from '@nestjs/swagger';
 import { CreateClientDto } from './dtos/create-client.dto';
@@ -13,6 +15,7 @@ import { LoggerPort } from '../logging/domain/logger.port';
 import { RedisRpcPort } from 'src/redis/domain/redis-rpc.port';
 import { ClientRpcChannelsEnum } from './enums/client.rpc-channels';
 import { UpdateClientDto } from './dtos/update-client.dto';
+import { GetGenericQueryDto } from 'src/shared/dtos/get-generic.dto';
 
 @Controller('clients')
 export class ClientController {
@@ -35,17 +38,20 @@ export class ClientController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Obtener todos los clientes' })
+  @ApiOperation({ summary: 'Obtener todos los clients' })
   @ApiResponse({
     status: 200,
-    description: 'Lista de clientes obtenida exitosamente.',
+    description: 'Lista de clients obtenida exitosamente.',
   })
   @ApiResponse({ status: 500, description: 'Error interno del servidor.' })
-  async findAll() {
-    const resp = await this.redisRpcPort.send(
-      ClientRpcChannelsEnum.FIND_ALL,
-      {},
-    );
+  async findAll(
+    @Query(new ValidationPipe({ transform: true }))
+    query: GetGenericQueryDto,
+  ) {
+    const resp = await this.redisRpcPort.send(ClientRpcChannelsEnum.FIND_ALL, {
+      page: query.page,
+      limit: query.limit,
+    });
     return resp;
   }
 

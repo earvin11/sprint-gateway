@@ -6,12 +6,15 @@ import {
   Param,
   Patch,
   Post,
+  Query,
+  ValidationPipe,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiParam, ApiBody } from '@nestjs/swagger';
 import { RedisRpcPort } from 'src/redis/domain/redis-rpc.port';
 import { CurrencyRpcChannelsEnum } from './enums/currency.rpc-channels';
 import { CreateCurrencyDto } from './dtos/create-currency.dto';
 import { UpdateCurrencyDto } from './dtos/update-currency.dto';
+import { GetGenericQueryDto } from 'src/shared/dtos/get-generic.dto';
 
 @Controller('currencies')
 export class CurrencyController {
@@ -33,16 +36,22 @@ export class CurrencyController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Obtener todas las monedas' })
+  @ApiOperation({ summary: 'Obtener todos los currencies' })
   @ApiResponse({
     status: 200,
-    description: 'Lista de monedas obtenida exitosamente.',
+    description: 'Lista de currencies obtenida exitosamente.',
   })
   @ApiResponse({ status: 500, description: 'Error interno del servidor.' })
-  async findAll() {
+  async findAll(
+    @Query(new ValidationPipe({ transform: true }))
+    query: GetGenericQueryDto,
+  ) {
     const resp = await this.redisRpcPort.send(
       CurrencyRpcChannelsEnum.FIND_ALL,
-      {},
+      {
+        page: query.page,
+        limit: query.limit,
+      },
     );
     return resp;
   }

@@ -8,6 +8,7 @@ import {
   Patch,
   Post,
   Query,
+  ValidationPipe,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiParam, ApiBody } from '@nestjs/swagger';
 import { LoggerPort } from '../logging/domain/logger.port';
@@ -22,6 +23,7 @@ import { UpdateOperatorDto } from './dtos/update-operator.dto';
 import { CreateOperatorGameDto } from './dtos/create-operator-game.dto';
 import { GetOperatorGamesQueryDto } from './dtos/get-operator-game.dto';
 import { CreateOperatorLimitsDto } from './dtos/create-operator-limit.dto';
+import { GetGenericQueryDto } from 'src/shared/dtos/get-generic.dto';
 
 @Controller('operators')
 export class OperatorController {
@@ -43,16 +45,22 @@ export class OperatorController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Obtener todos los operadores' })
+  @ApiOperation({ summary: 'Obtener todos los operators' })
   @ApiResponse({
     status: 200,
-    description: 'Lista de operadores obtenida exitosamente.',
+    description: 'Lista de operators obtenida exitosamente.',
   })
   @ApiResponse({ status: 500, description: 'Error interno del servidor.' })
-  async findAll() {
+  async findAll(
+    @Query(new ValidationPipe({ transform: true }))
+    query: GetGenericQueryDto,
+  ) {
     const resp = await this.redisRpcPort.send(
       OperatorRpcChannelsEnum.FIND_ALL,
-      {},
+      {
+        page: query.page,
+        limit: query.limit,
+      },
     );
     return resp;
   }

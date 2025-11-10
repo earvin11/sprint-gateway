@@ -1,8 +1,18 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+  ValidationPipe,
+} from '@nestjs/common';
 import { RedisRpcPort } from 'src/redis/domain/redis-rpc.port';
 import { CreateGameDto } from './dtos/create-game.dto';
 import { GameRpcChannelsEnum } from './enums/game.rpc-channels';
 import { ApiBody, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
+import { GetGenericQueryDto } from 'src/shared/dtos/get-generic.dto';
 
 @Controller('games')
 export class GameController {
@@ -27,8 +37,14 @@ export class GameController {
     description: 'Lista de games obtenida exitosamente.',
   })
   @ApiResponse({ status: 500, description: 'Error interno del servidor.' })
-  async findAll() {
-    const resp = await this.redisRpcPort.send(GameRpcChannelsEnum.FIND_ALL, {});
+  async findAll(
+    @Query(new ValidationPipe({ transform: true }))
+    query: GetGenericQueryDto,
+  ) {
+    const resp = await this.redisRpcPort.send(GameRpcChannelsEnum.FIND_ALL, {
+      page: query.page,
+      limit: query.limit,
+    });
     return resp;
   }
 
