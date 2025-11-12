@@ -8,7 +8,7 @@ export class LobbyDto {
 
   @ApiProperty()
   @IsString()
-  casinoId: string;
+  operatorId: string;
 
   @ApiProperty()
   @IsString()
@@ -16,7 +16,7 @@ export class LobbyDto {
 
   @ApiProperty()
   @IsString()
-  operatorId: string;
+  language: string;
 
   @ApiProperty()
   @IsString()
