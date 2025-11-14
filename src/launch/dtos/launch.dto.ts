@@ -21,4 +21,8 @@ export class LaunchDto {
   @ApiProperty()
   @IsString()
   currency: string;
+
+  @ApiProperty()
+  @IsString()
+  language: string;
 }
